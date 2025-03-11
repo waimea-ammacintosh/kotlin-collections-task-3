@@ -114,13 +114,16 @@ fun setupCages(): MutableList<String> {
  */
 fun placeMonkeyInCage(cageList: MutableList<String>, cageNum: Int, name: String) {
     println("+++ Putting $name into cage $cageNum")
-    if (cageNum ..<cageList.size -1) {
-        println("$name cant go in that cage, as it dosen't exist!!!")
+    if(name.isNotBlank()) {
+        if (cageNum in 1..NUMCAGES) {
+            cageList.removeAt(cageNum - 1)
+            cageList.add(index = cageNum - 1, name)
+
+        } else {
+            println("ERROR PLACING MONKEY IN CAGE: Cage number $cageNum is out of range.")
+        }
     }
-    else {
-        cageList.removeAt(cageNum - 1)
-        cageList.add(index = cageNum - 1, name)
-    }
+    else println("ERROR PLACING MONKEY IN CAGE: Monkey name '$name' is blank.")
 }
 
 
@@ -265,9 +268,13 @@ fun showMonkeyCages(cageList: List<String>) {
  */
 fun clearCage(cageList: MutableList<String>, cageNum: Int) {
     println("--- Clearing cage $cageNum")
-
-    cageList.removeAt(index = cageNum)
-    cageList.add(index = cageNum -1, EMPTY)
+    if (cageNum in 1..NUMCAGES) {
+        cageList.removeAt(index = cageNum)
+        cageList.add(index = cageNum - 1, EMPTY)
+    }
+    else {
+        println("ERROR CLEARING CAGE: Cage number $cageNum is out of range.")
+    }
 
 }
 
@@ -280,14 +287,23 @@ fun clearCage(cageList: MutableList<String>, cageNum: Int) {
  */
 fun swapCages(cageList: MutableList<String>, cageNum1: Int, cageNum2: Int) {
     println("<-> Swapping cages $cageNum1 and $cageNum2")
-    val monkey1 = cageList[cageNum1 -1]
-    val monkey2 = cageList[cageNum2 -1]
+    if(cageNum1 in 1..NUMCAGES && cageNum2 in 1..NUMCAGES) {
+        val monkey1 = cageList[cageNum1 - 1]
+        val monkey2 = cageList[cageNum2 - 1]
 
-    cageList.removeAt(cageNum1 -1,)
-    cageList.add(index = cageNum1 -1, monkey2)
-    cageList.removeAt(cageNum2 -1)
-    cageList.add(index = cageNum2 -1, monkey1)
-
+        cageList.removeAt(cageNum1 - 1,)
+        cageList.add(index = cageNum1 - 1, monkey2)
+        cageList.removeAt(cageNum2 - 1)
+        cageList.add(index = cageNum2 - 1, monkey1)
+    }
+    else {
+        if (cageNum1 in 1..NUMCAGES) {
+            println("ERROR SWAPPING CAGES: Cage number $cageNum2 is out of range.")
+        }
+        else {
+            println("ERROR SWAPPING CAGES: Cage number $cageNum1 is out of range.")
+        }
+    }
 
 }
 /**
